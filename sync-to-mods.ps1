@@ -1,4 +1,4 @@
-# UTF-8 出力設定
+﻿# UTF-8 出力設定
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
@@ -59,6 +59,17 @@ foreach ($folder in $IncludeFolders) {
     }
 }
 
+
+# ルートファイルの同期（LoadFolders.xml）
+$rootFiles = @("LoadFolders.xml")
+foreach ($rf in $rootFiles) {
+    $srcFile = Join-Path $SourceDir $rf
+    $dstFile = Join-Path $TargetDir $rf
+    if (Test-Path $srcFile) {
+        Copy-Item -Path $srcFile -Destination $dstFile -Force
+        Write-Host "同期中: $rf" -ForegroundColor Yellow
+    }
+}
 # 2. 厳格な安全スキャン（二重チェック：.agents, Source, Docs, .git, *.pdb 等の完全排除）
 Write-Host ""
 Write-Host "同期先フォルダの安全スキャンを実行中..." -ForegroundColor Cyan
